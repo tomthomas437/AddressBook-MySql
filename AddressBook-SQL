@@ -1,0 +1,213 @@
+UC1:  
+
+mysql> CREATE DATABASE AddressBookServices;
+Query OK, 1 row affected (1.39 sec)
+
+mysql> show databases;
++---------------------+
+| Database            |
++---------------------+
+| address_book        |
+| addressbookservices |
+| information_schema  |
+| mysql               |
+| performance_schema  |
+| sakila              |
+| sys                 |
+| world               |
++---------------------+
+8 rows in set (1.85 sec)
+------------------------------------------------------------------------------------------------------------------
+
+UC2:
+
+ CREATE TABLE Contact(FirstName varchar(30), LastName varchar(30), Address varchar(50), City varchar(50), Zip int, PhoneNumber int, Email varchar(50));
+Query OK, 0 rows affected (5.45 sec)
+
+mysql> desc Contact;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| FirstName   | varchar(30) | YES  |     | NULL    |       |
+| LastName    | varchar(30) | YES  |     | NULL    |       |
+| Address     | varchar(50) | YES  |     | NULL    |       |
+| City        | varchar(50) | YES  |     | NULL    |       |
+| Zip         | int         | YES  |     | NULL    |       |
+| PhoneNumber | int         | YES  |     | NULL    |       |
+| Email       | varchar(50) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+7 rows in set (0.41 sec)
+
+----------------------------------------------------------------------------------------------------------
+
+UC3:
+
+mysql> INSERT INTO Contact VALUES("Tom", "Thomas", "Sparkle", "Pune", 44444, 999999999, "tom@gmail.com");
+Query OK, 1 row affected (0.73 sec)
+
+mysql> INSERT INTO Contact VALUES("Pranav", "Shinde", "Paradise", "Pune", 44232, 975467281, "pranav@gmail.com");
+Query OK, 1 row affected (0.14 sec)
+
+mysql> INSERT INTO Contact VALUES("Akshay", "Singh", "Avenue", "Mumbai", 40231, 93846128, "akshay@gmail.com");
+Query OK, 1 row affected (0.20 sec)
+
+mysql> select * from Contact;
++-----------+----------+----------+--------+-------+-------------+------------------+
+| FirstName | LastName | Address  | City   | Zip   | PhoneNumber | Email            |
++-----------+----------+----------+--------+-------+-------------+------------------+
+| Tom       | Thomas   | Sparkle  | Pune   | 44444 |   999999999 | tom@gmail.com    |
+| Pranav    | Shinde   | Paradise | Pune   | 44232 |   975467281 | pranav@gmail.com |
+| Akshay    | Singh    | Avenue   | Mumbai | 40231 |    93846128 | akshay@gmail.com |
++-----------+----------+----------+--------+-------+-------------+------------------+
+3 rows in set (0.00 sec)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+UC4:
+
+mysql> UPDATE Contact SET Address="B.U Bhandari" where FirstName="Tom";
+Query OK, 1 row affected (0.13 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Contact;
++-----------+----------+--------------+--------+-------+-------------+------------------+
+| FirstName | LastName | Address      | City   | Zip   | PhoneNumber | Email            |
++-----------+----------+--------------+--------+-------+-------------+------------------+
+| Tom       | Thomas   | B.U Bhandari | Pune   | 44444 |   999999999 | tom@gmail.com    |
+| Pranav    | Shinde   | Paradise     | Pune   | 44232 |   975467281 | pranav@gmail.com |
+| Akshay    | Singh    | Avenue       | Mumbai | 40231 |    93846128 | akshay@gmail.com |
++-----------+----------+--------------+--------+-------+-------------+------------------+
+3 rows in set (0.04 sec)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+UC5:
+
+ DELETE from Contact WHERE FirstName="Akshay";
+Query OK, 1 row affected (0.21 sec)
+
+mysql> select * from Contact;
++-----------+----------+--------------+------+-------+-------------+------------------+
+| FirstName | LastName | Address      | City | Zip   | PhoneNumber | Email            |
++-----------+----------+--------------+------+-------+-------------+------------------+
+| Tom       | Thomas   | B.U Bhandari | Pune | 44444 |   999999999 | tom@gmail.com    |
+| Pranav    | Shinde   | Paradise     | Pune | 44232 |   975467281 | pranav@gmail.com |
++-----------+----------+--------------+------+-------+-------------+------------------+
+2 rows in set (0.01 sec)
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+UC6:
+
+ SELECT FirstName FROM Contact WHERE City="Pune";
++-----------+
+| FirstName |
++-----------+
+| Tom       |
+| Pranav    |
++-----------+
+2 rows in set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+UC7:
+
+ SELECT COUNT(City) FROM Contact GROUP BY City;
++-------------+
+| COUNT(City) |
++-------------+
+|           2 |
+|           1 |
++-------------+
+2 rows in set (0.04 sec)
+
+----------------------------------------------------------------------------------------------------------
+
+UC8:
+
+mysql> SELECT FirstName, LastName, City from Contact ORDER BY FirstName;
++-----------+----------+--------+
+| FirstName | LastName | City   |
++-----------+----------+--------+
+| Akshay    | Singh    | Mumbai |
+| Pranav    | Shinde   | Pune   |
+| Rijo      | Rio      | Nagpur |
+| Tom       | Thomas   | Pune   |
++-----------+----------+--------+
+4 rows in set (0.05 sec)
+
+-------------------------------------------------------------------------------------------------------------------------
+
+UC9:
+
+mysql> UPDATE Contact SET Type="Family" WHERE FirstName="Tom";
+mysql> UPDATE Contact SET Type="Friends" WHERE FirstName="Pranav";
+mysql> UPDATE Contact SET Type="Family" WHERE FirstName="Rijo";
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from Contact;
++-----------+----------+--------------+--------+--------+-------------+------------------+---------+
+| FirstName | LastName | Address      | City   | Zip    | PhoneNumber | Email            | Type    |
++-----------+----------+--------------+--------+--------+-------------+------------------+---------+
+| Tom       | Thomas   | B.U Bhandari | Pune   |  44444 |   999999999 | tom@gmail.com    | Family  |
+| Pranav    | Shinde   | Paradise     | Pune   |  44232 |   975467281 | pranav@gmail.com | Friends |
+| Akshay    | Singh    | Avenue       | Mumbai |  40231 |    93846128 | akshay@gmail.com | NULL    |
+| Rijo      | Rio      | Empire       | Nagpur | 407578 |   987747689 | rijo@gmail.com   | Family  |
++-----------+----------+--------------+--------+--------+-------------+------------------+---------+
+4 rows in set (0.00 sec)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+UC10:
+
+SELECT COUNT(*) FROM Contact GROUP BY Type;
++----------+
+| COUNT(*) |
++----------+
+|        2 |
+|        1 |
+|        1 |
++----------+
+3 rows in set (0.04 sec)
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+UC11:
+
+mysql> INSERT INTO Contact VALUES("Jijo", "Ch", "Farms", "Chennai", 42422, 356352521, "jijo@gmail.com", "Family");
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from Contact;
++-----------+----------+--------------+---------+--------+-------------+------------------+---------+
+| FirstName | LastName | Address      | City    | Zip    | PhoneNumber | Email            | Type    |
++-----------+----------+--------------+---------+--------+-------------+------------------+---------+
+| Tom       | Thomas   | B.U Bhandari | Pune    |  44444 |   999999999 | tom@gmail.com    | Family  |
+| Pranav    | Shinde   | Paradise     | Pune    |  44232 |   975467281 | pranav@gmail.com | Friends |
+| Akshay    | Singh    | Avenue       | Mumbai  |  40231 |    93846128 | akshay@gmail.com | NULL    |
+| Rijo      | Rio      | Empire       | Nagpur  | 407578 |   987747689 | rijo@gmail.com   | Family  |
+| Jijo      | Ch       | Farms        | Chennai |  42422 |   356352521 | jijo@gmail.com   | Family  |
++-----------+----------+--------------+---------+--------+-------------+------------------+---------+
+5 rows in set (0.01 sec)
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
